@@ -27,7 +27,12 @@ Token Lexer::build_token(TokenType type) {
             while (peek().has_value() && peek().value() != '"') {
                 temp.push_back(consume());
             }
-            consume();
+            if (peek().has_value() && peek().value() == '"') {
+                consume();
+            } else {
+                std::cerr << "[" << m_index << "] " << "Unterminated string literal, missing closing \"\n";
+                exit(EXIT_FAILURE);
+            }
             break;
         default:
             std::cerr << "Cannot build token for type: " << TOKEN_TYPE_STRS.at(TOKEN_TYPE_AS_INT(type)) << "\n";
@@ -51,8 +56,12 @@ std::vector<Token> Lexer::tokenize() {
             continue;
         } else if (c == '"') {
            consume();
-           tokens.push_back(build_token(TokenType::STRING_LITERAL));
-           continue;
+           if (peek().has_value() && peek().value() != '"') {
+               tokens.push_back(build_token(TokenType::STRING_LITERAL));
+               continue;
+           } else {
+               tokens.push_back(Token{.pos = m_index, .type = TokenType::STRING_LITERAL, .value = {}});
+           }
         } else if (!isspace(c)){
             TokenType type;
             switch (c) {

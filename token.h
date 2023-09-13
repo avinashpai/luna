@@ -28,8 +28,15 @@ enum class TokenType: uint8_t {
 };
 
 constexpr std::array KEYWORDS = {
-        "if", "else", "true", "false", "while", "for",
-        "continue", "break", "int", "str", "bool", "return",
+        // Control Flow
+        "if", "else",
+        "true", "false",
+        "while", "for",
+        "continue", "break",
+        "return",
+        // Types
+        "int", "str", "bool",
+        // Built-in functions
         "print", "exit"
 };
 
