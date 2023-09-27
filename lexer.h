@@ -11,25 +11,31 @@
 
 #include "token.h"
 
-extern void print_usage();
 
 class Lexer {
 public:
-   inline explicit Lexer(std::string_view source) :
-    m_src(source) {}
+   explicit Lexer(std::string_view source) :
+        m_src(source) {}
 
-   std::vector<Token> tokenize();
-   inline void dump_source() {
-       std::cout << "Dumping Lexer Source: " << m_src << std::endl;
-   }
+   auto tokenize() -> std::vector<Token>;
 
 private:
-    [[nodiscard]] Token build_token(TokenType type);
-    [[nodiscard]] std::optional<char> peek(int offset = 0) const;
-    inline char consume() {
-        return m_src.at(m_index++);
-    }
+    [[nodiscard]] auto build_token(TokenType type) -> Token;
+    [[nodiscard]] auto peek(int offset = 0) const -> std::optional<char>;
+    auto advance() -> char;
 
     std::string_view m_src;
     size_t m_index = 0;
+    size_t m_line = 1;
+    size_t m_column = 1;
+
+    const std::map<std::string_view, TokenType> KEYWORD_LUT = {
+            { "if", TokenType::IF }, { "else", TokenType::ELSE },
+            { "true", TokenType::TRUE }, { "false", TokenType::FALSE },
+            { "while", TokenType::WHILE }, { "for", TokenType::FOR },
+            { "continue", TokenType::CONTINUE }, { "break", TokenType::BREAK },
+            { "int", TokenType::INT }, { "str", TokenType::STR }, { "bool", TokenType::BOOL },
+            { "fn", TokenType::FN }, { "main", TokenType::MAIN },
+            { "print", TokenType::PRINT }, { "exit", TokenType::EXIT }
+    };
 };

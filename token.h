@@ -5,6 +5,7 @@
 #pragma once
 
 #include <array>
+#include <map>
 #include <optional>
 #include <string>
 
@@ -14,6 +15,7 @@ enum class TokenType: uint8_t {
     IDENTIFER = 0,
     NUMBER_LITERAL,
     STRING_LITERAL,
+    CHAR_LITERAL,
     LEFT_PAREN, RIGHT_PAREN,
     LEFT_BRACE, RIGHT_BRACE,
     LEFT_BRACKET, RIGHT_BRACKET,
@@ -23,7 +25,14 @@ enum class TokenType: uint8_t {
     FORWARD_SLASH, STAR,
     SEMI_COLON,
     COLON,
-    KEYWORD,
+    // KEYWORDS
+    IF, ELSE,
+    TRUE, FALSE,
+    FOR, BREAK,
+    WHILE, CONTINUE,
+    INT, STR, BOOL,
+    PRINT, EXIT,
+    FN, MAIN,
     NONE [[maybe_unused]]
 };
 
@@ -36,6 +45,7 @@ constexpr std::array KEYWORDS = {
         "return",
         // Types
         "int", "str", "bool",
+        "fn", "main",
         // Built-in functions
         "print", "exit"
 };
@@ -44,27 +54,35 @@ constexpr std::array TOKEN_TYPE_STRS = {
         "Identifier",
         "Number",
         "String",
-        "Left Paren",
-        "Right Paren",
-        "Left Brace",
-        "Right Brace",
-        "Left Bracket",
-        "Right Bracket",
-        "Equals",
-        "Comma",
-        "Dot",
-        "Minus",
-        "Plus",
-        "Forward Slash",
-        "Star",
-        "Semicolon",
-        "Colon",
-        "Keyword",
+        "Character",
+        "\'(\'",
+        "\')\'",
+        "\'{\'",
+        "\'}\'",
+        "\'[\'",
+        "\']\'",
+        "\'=\'",
+        "\',\'",
+        "\'.\'",
+        "\'-\'",
+        "\'+\'",
+        "\'/\'",
+        "\'*\'",
+        "\';\'",
+        "\':\'",
+        "IF", "ELSE",
+        "TRUE", "FALSE",
+        "FOR", "BREAK",
+        "WHILE", "CONTINUE",
+        "INT", "STR", "BOOL",
+        "PRINT", "EXIT",
+        "FN", "MAIN",
         "Unknown"
 };
 
 typedef struct Token {
-    size_t pos;
+    size_t line;
+    size_t column;
     TokenType type;
     std::optional<std::string> value;
 } Token;

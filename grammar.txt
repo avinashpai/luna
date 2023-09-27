@@ -1,0 +1,35 @@
+block := { stat+ }
+stat := expr
+    | assignment_decl
+    | funccall ;
+funccall := ident(expr?)
+assignment_decl := ident typeann? = expr
+typeann := :type
+type := type[]
+    | int
+    | str
+    | bool
+expr := ident
+    | literal
+    | binexpr
+    | unexpr
+binexpr := expr binop expr
+unexpr := unop expr
+binop := *
+    | /
+    | +
+    | -
+    | %
+    | &
+    | |
+    | ^
+unop := !
+    | ~
+ident := [_a-zA-Z][_a-zA-Z0-9]
+literal := strlit
+    | numlit
+    | charlit
+strlit := "char*"
+numlit := [1-9][0-9]*
+charlit := 'char'
+char := ascii
