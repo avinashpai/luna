@@ -4,6 +4,10 @@
 
 #pragma once
 
+#include <memory>
+#include <variant>
+#include <vector>
+
 #include "token.h"
 
 template <typename T>

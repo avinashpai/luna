@@ -1,4 +1,4 @@
-#include <format>
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -60,49 +60,49 @@ int main(int argc, char* argv[]) {
 
    auto lexer = Lexer(source);
    std::vector<Token> tokens = lexer.tokenize();
-  // dump_tokens(tokens);
+   dump_tokens(tokens);
 
    auto parser = Parser(tokens);
-   auto prog = parser.parse_prog();
+   //auto prog = parser.parse_prog();
 
-   if (prog.has_value()) {
-       auto stats = prog.value().stats;
-       for (auto& stat : stats) {
-
-           struct visitor {
-               struct expr_visitor {
-                   void operator()(const Box<NodeIdent>& ident) {
-                        std::cout << "\t\tIdentifier: " << ident->ident.value.value_or("null") << "\n";
-                   }
-                   void operator()(const Box<NodeLiteral>& lit) {
-                       std::cout << "\t\t" << (lit->literal.type == TokenType::NUMBER_LITERAL ? "Number" : "String")
-                        << " literal: " << lit->literal.value.value_or("null") << "\n";
-                   }
-                   void operator()(const Box<struct NodeBinExpr>& bin_expr) {
-
-                   }
-                   void operator()(const Box<struct NodeUnaryExpr>& unary_expr) {
-
-                   }
-               };
-
-               void operator()(const Box<struct NodeFuncCall>& stat) {
-                    std::cout << "NodeFuncCall: " <<
-                        "\n\tfunc: " << "print()" << "\n\t" <<
-                        "params: \n";
-                    std::visit(expr_visitor{}, stat->param.value());
-               }
-               void operator()(const Box<struct NodeExprStat>& stat) {
-
-               }
-               void operator()(const Box<struct NodeAssignDecl>& stat) {
-
-               }
-           };
-
-           std::visit(visitor{}, stat);
-       }
-   }
+//   if (prog.has_value()) {
+//       auto stats = prog.value().stats;
+//       for (auto& stat : stats) {
+//
+//           struct visitor {
+//               struct expr_visitor {
+//                   void operator()(const Box<NodeIdent>& ident) {
+//                        std::cout << "\t\tIdentifier: " << ident->ident.value.value_or("null") << "\n";
+//                   }
+//                   void operator()(const Box<NodeLiteral>& lit) {
+//                       std::cout << "\t\t" << (lit->literal.type == TokenType::NUMBER_LITERAL ? "Number" : "String")
+//                        << " literal: " << lit->literal.value.value_or("null") << "\n";
+//                   }
+//                   void operator()(const Box<struct NodeBinExpr>& bin_expr) {
+//
+//                   }
+//                   void operator()(const Box<struct NodeUnaryExpr>& unary_expr) {
+//
+//                   }
+//               };
+//
+//               void operator()(const Box<struct NodeFuncCall>& stat) {
+//                    std::cout << "NodeFuncCall: " <<
+//                        "\n\tfunc: " << "print()" << "\n\t" <<
+//                        "params: \n";
+//                    std::visit(expr_visitor{}, stat->param.value());
+//               }
+//               void operator()(const Box<struct NodeExprStat>& stat) {
+//
+//               }
+//               void operator()(const Box<struct NodeAssignDecl>& stat) {
+//
+//               }
+//           };
+//
+//           std::visit(visitor{}, stat);
+//       }
+//   }
 
    return EXIT_SUCCESS;
 }
